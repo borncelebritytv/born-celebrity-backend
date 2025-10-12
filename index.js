@@ -1,21 +1,22 @@
-require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
+const supabase = require('./supabase'); // ✅ matches supabase.js
+
 const app = express();
-const supabase = require('./src/supabaseClient');
+const PORT = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
-res.send('Born Celebrity TV backend is live with Express and Supabase');
+app.use(cors());
+app.use(express.json());
+
+app.get('/', async (req, res) => {
+try {
+res.send('Backend is live and connected to Supabase!');
+} catch (error) {
+console.error('Route error:', error);
+res.status(500).send('Something went wrong.');
+}
 });
 
-app.get('/users', async (req, res) => {
-const { data, error } = await supabase
-.from('users')
-.select('*');
-
-if (error) return res.status(500).json({ error: error.message });
-res.json(data);
+app.listen(PORT, () => {
+console.log(`Server running on port ${PORT}`);
 });
-
-app.listen(3000, () => {
-console.log('Server running at http://localhost:3000');
-});https://kkvwxtqrthsnlloimssb.supabase.co
