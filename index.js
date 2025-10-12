@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const supabase = require('./supabaseClient');
+const supabase = require('./src/supabaseClient');
 
 app.get('/', (req, res) => {
 res.send('Born Celebrity TV backend is live with Express and Supabase');
@@ -18,4 +18,4 @@ res.json(data);
 
 app.listen(3000, () => {
 console.log('Server running at http://localhost:3000');
-});
+});https://kkvwxtqrthsnlloimssb.supabase.co
