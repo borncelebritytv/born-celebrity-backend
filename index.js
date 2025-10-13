@@ -1,20 +1,9 @@
 const express = require('express');
 const app = express();
-const usersRouter = require('./users'); // Make sure users.js is in the same folder
+const usersRoute = require('./users'); // assumes users.js is in the same folder
 
-app.use(express.json());
+app.use('/users', usersRoute);
 
-// Mount the /users route
-app.use('/users', usersRouter);
-
-// Default root route (optional)
-app.get('/', (req, res) => {
-  res.send('Born Celebrity backend is live!');
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
 });
-
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
