@@ -1,20 +1,12 @@
 const express = require('express');
 const app = express();
-const usersRoute = require('./users');
-const signupRoute = require('./signup');
+const signupRoute = require('./signup'); // Adjust path if signup.js is in a subfolder
 
-app.use(express.json()); // Middleware to parse JSON bodies
+app.use(express.json()); // Middleware to parse JSON
 
-// Routes
-app.use('/users', usersRoute);
-app.use('/signup', signupRoute);
+app.use('/signup', signupRoute); // Mount the signup route
 
-// Root route
-app.get('/', (req, res) => {
-  res.send('Born Celebrity backend is live');
-});
-
-// Start server
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
