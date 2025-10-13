@@ -1,10 +1,20 @@
 const express = require('express');
 const app = express();
-const signupRoute = require('./signup'); // Adjust path if signup.js is in a subfolder
+const { createClient } = require('@supabase/supabase-js');
 
-app.use(express.json()); // Middleware to parse JSON
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
 
-app.use('/signup', signupRoute); // Mount the signup route
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('Supabase credentials are missing.');
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+const signupRoute = require('./signup')(supabase); // pass client in
+
+app.use(express.json());
+app.use('/signup', signupRoute);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
