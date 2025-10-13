@@ -18,3 +18,6 @@ router.get('/', async (req, res) => {
 });
 
 module.exports = router;
+app.get('/', (req, res) => {
+  res.send('Born Celebrity backend is live!');
+});

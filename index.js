@@ -1,30 +1,20 @@
 const express = require('express');
-const cors = require('cors');
-const supabase = require('./supabase');
-
 const app = express();
-const PORT = process.env.PORT || 3000;
+const usersRouter = require('./users'); // Make sure users.js is in the same folder
 
-app.use(cors());
 app.use(express.json());
 
-// Root route
+// Mount the /users route
+app.use('/users', usersRouter);
+
+// Default root route (optional)
 app.get('/', (req, res) => {
-  res.send('Backend is live and connected to Supabase!');
+  res.send('Born Celebrity backend is live!');
 });
 
-// ✅ Best option: Live /users route
-app.get('/users', async (req, res) => {
-  try {
-    const { data, error } = await supabase.from('users').select('*');
-    if (error) throw error;
-    res.json(data);
-  } catch (err) {
-    console.error('Supabase error:', err);
-    res.status(500).json({ error: 'Failed to fetch users' });
-  }
-});
-
+// Start the server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
