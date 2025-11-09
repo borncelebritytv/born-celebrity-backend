@@ -1,23 +1,25 @@
 const express = require('express');
+const router = express.Router();
+const supabase = require('../supabase'); // shared client
 
-module.exports = function(supabase) {
-  const router = express.Router();
+// POST /signup
+router.post('/signup', async (req, res) => {
+  const {
+    email,
+    show_id,
+    device_type,
+    platform,
+    cover_art_id,
+    referrer,
+    user_agent
+  } = req.body;
 
-  // POST /signup — handles incoming signup data
-  router.post('/', async (req, res) => {
-    console.log('POST /signup received:', req.body); // ✅ Logs incoming data
+  if (!email || !cover_art_id) {
+    return res.status(400).json({ error: 'Missing required fields: email or cover_art_id' });
+  }
 
-    const {
-      email,
-      show_id,
-      device_type,
-      platform,
-      cover_art_id,
-      referrer,
-      user_agent
-    } = req.body;
-
-    const { error } = await supabase
+  try {
+    const { data, error } = await supabase
       .from('user_signups')
       .insert([{
         email,
@@ -30,17 +32,13 @@ module.exports = function(supabase) {
       }]);
 
     if (error) {
-      console.error('Supabase insert error:', error);
       return res.status(500).json({ error: error.message });
     }
 
-    res.status(201).json({ message: 'Signup successful' });
-  });
+    return res.status(200).json({ message: 'Signup successful', data });
+  } catch (err) {
+    return res.status(500).json({ error: 'Server error', details: err.message });
+  }
+});
 
-  // GET /signup — confirms route is live
-  router.get('/', (req, res) => {
-    res.send('Signup route is live — POST only');
-  });
-
-  return router;
-};
+module.exports = router;

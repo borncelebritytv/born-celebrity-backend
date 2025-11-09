@@ -1,4 +1,3 @@
-// testSignup.js
 const axios = require('axios');
 
 axios.post('https://born-celebrity-backend.onrender.com/signup', {
