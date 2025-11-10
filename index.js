@@ -1,20 +1,25 @@
 const express = require('express');
-const app = express();
 const cors = require('cors');
-
-// Import route files from the routes folder
-const signupRoute = require('./routes/signup');
-const userRoute = require('./routes/user');
+const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Route handlers
+// Routes
+const signupRoute = require('./routes/signup');
+const userRoute = require('./routes/user');
+
 app.use('/signup', signupRoute);
 app.use('/user', userRoute);
 
-// Server listener
-app.listen(10000, () => {
-  console.log('✅ Server running on port 10000');
+// Root check
+app.get('/', (req, res) => {
+  res.send('Born Celebrity backend is live');
+});
+
+// Port setup for Render
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT}`);
 });
